@@ -1,0 +1,59 @@
+# Start Project
+rails new blog
+rails g model Blog name:string description:text
+rails g model Post title:string content:text blog:references
+rails g model Message author:string message:text post:references
+rake db:migrate
+
+# Implement the following validations:
+class Blog < ActiveRecord::Base
+  has_many :posts
+  validates :name, :description, presence: true
+end
+
+class Post < ActiveRecord::Base
+  has_many :messages
+  belongs_to :blog
+  validates :content, presence: true
+  validates :title, length: { minimum: 7 }
+end
+
+class Message < ActiveRecord::Base
+  belongs_to :post
+  validates :author, :message, presence: true
+end
+
+# Using the console:
+# 1. create 5 new blogs.
+1. Blogger.create(name:"This is a blog", description: "This is the description for Blog 1") ---> Implement 5 times
+
+# 2. create several posts for each blog
+  blogger.posts.create(title: "This is Post #{(:id).to_i + 1}", content: "This post belongs to Blog #{blog.id}")
+
+# 3. create several messages for the first post.
+  Post.first.messages.create(author: "Lebron James", message: "This is my Journey") ---> Create a few different ones
+
+# 4. know how to retrieve all posts for the first blog.
+Blog.first.posts
+
+# 5. know how to retrieve all posts for the last blog (sorted by title in the DESC order).
+Post.where(blogger: Blogger.last).order(title: :desc)
+
+# 6. know how to update the first post's title.
+Post.first.update(title: "Updating the title")
+
+# 7. know how to delete the third post (have the model automatically delete all messages associated with the third post when you delete the third post).
+class Post < ActiveRecord::Base
+  has_many :messages, dependent: :destroy
+  belongs_to :blog
+  validates :content, presence: true
+  validates :title, length: { minimum: 7 }
+end
+
+Post.third.destroy
+
+# 8. know how to retrieve all blogs.
+Blog.all
+
+# 9. know how to retrieve all blogs whose id is less than 5.
+Blog.where("id < ?", 5)
