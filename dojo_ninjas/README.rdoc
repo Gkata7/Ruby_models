@@ -1,33 +1,58 @@
-Start a new project (the name of the project should be 'dojo_ninjas') Create appropriate tables/models. Using Ruby console:
+1. Start the new project
+rails g new dojo_ninjas
 
-Create 3 dojos (insert some blank entries just to make sure it's allowing you to insert empty entries)
+2. create appropriate tables/models
+rails g model Code (name:string, city:string, state:string)
+rails g model Ninja (first_name:string, last_name:string)
 
-Change your models so that it does the following validations:
+3. create 3 code schools
+Code.create(name: "CodingDojo Seattle", city: "Seattle", state: "WA") -----> Create 3 more schools
 
-For the dojo, require the presence of the name, city, and state; also require the state to be two characters long
+4/5. change models for the required validations.
+  class Dojo < ActiveRecord::Base
+    has_many :ninjas
+    validates :name, :city, :state, presence: true
+    validates :state, length: { is: 2 }
+  end
 
-For the ninja, require the presence of the first name and last name
+  class Ninja < ActiveRecord::Base
+    belongs_to :dojo
+    validates :first_name, :last_name, presence: true
+  end
 
-Make sure that your ninja model belongs to the dojo (specify this in the model for both the dojo and the ninja)
+6. Delete the Code Schools created
+  Dojo.destroy_all --> BE Careful with this one
+  Dojo.find(1).delete ---> DO this for all 3
 
-Using ruby console:
+7. Create 3 additional schools with Code.new
+  Code1 = Code.new(name:"CodingDojo Silicon Valley", city:"San Jose", state:"CA")
+  code1.save
+  Code2 = Code.new(name:"CodingDojo LA", city:"Los Angeles", state:"CA")
+  code2.save
+  Code3 = Code.new(name:"CodingDojo New York", city:"New York", state:"NY")
+  code3.save
 
-Delete the three dojos you created (e.g. Dojo.find(1).destroy; also look up destroy_all method)
+8. check to see if validations work
+  code = Code.new
+  code.save
+  code.errors.full_messages
 
-Create 3 additional dojos by using Dojo.new.
+9. create 3 ninjas that belong to the first,second,third code school
+Code.first.ninja.create(first_name: "Garrett", last_name:"Katashima")
+Code.second.ninja.create(first_name: "Steph", last_name:"Curry")
+Code.third.ninja.create(first_name: "Lebron", last_name:"James")
 
-Try to create a few more dojos but without specifying some of the required fields. Make sure that the validation works
-and generates the errors.
+10. Make sure you receive all ninjas from any schools
+Code.first.ninjas
+Code.second.ninjas
+Code.third.ninjas
 
- Create 3 ninjas that belong to the first dojo you created.
- Create 3 more ninjas and have them belong to the second dojo you created.
- Create 3 more ninjas and have them belong to the third dojo you created.
+11. How would you retrieve the first_name of the ninjas that belong to the second school and order result by created_at: DESC order?
+Ninja.where(code: Code.second).select(:id,:first_name).order(created_at: :desc)
 
- Make sure you understand how to get all of the ninjas for any dojo
- (e.g. get all the ninjas for the first dojo, second dojo, etc).
-
- How would you only retrieve the first_name of the ninjas that belong to the second dojo and order the result
- by created_at DESC order?
-
- Delete the second dojo. How could you adjust your model so that it automatically removes all of the ninjas
- associated with that dojo?
+12. delete the second code school. How could you adjust the model so that it automatically removes all of the ninjas associated with that dojo?
+class Dojo < ActiveRecord::Base
+  has_many :ninjas, dependent :destroy
+  validates :name, :city, :state, presence: true
+  validates :state, length: { is: 2 }
+end
