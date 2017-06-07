@@ -1,0 +1,85 @@
+Create 5 users
+  User.create(first_name:"Steph", last_name:"Curry", email:"steph@curry.com")
+  User.create(first_name:"Lebron", last_name:"James", email:"lebron@james.com")
+  User.create(first_name:"Klay", last_name:"Thompson", email:"klay@thompson.com")
+  User.create(first_name:"Klay", last_name:"Thompson", email:"klay@thompson.com")
+  User.create(first_name:"Klay", last_name:"Thompson", email:"klay@thompson.com")
+
+Create 5 blogs
+  Blog.create(name:"blog 1", description:"This is blog 1, TADAAA!!")
+  Blog.create(name:"blog 2", description:"This is blog 2, TADAAA!!")
+  Blog.create(name:"blog 3", description:"This is blog 3, TADAAA!!")
+  Blog.create(name:"blog 4", description:"This is blog 4, TADAAA!!")
+  Blog.create(name:"blog 5", description:"This is blog 5, TADAAA!!")
+
+Have the first 3 blogs be owned by the first user
+  Owner.create(user: User.first, blog: Blog.first)
+  Owner.create(user: User.first, blog: Blog.second)
+  Owner.create(user: User.first, blog: Blog.third)
+
+Have the 4th blog you create be owned by the second user
+  Owner.create(user: User.second, blog: Blog.fourth)
+
+Have the 5th blog you create be owned by the last user
+  Owner.create(user: User.fifth, blog: Blog.fifth)
+
+Have the third user own all of the blogs that were created.
+  Owner.create(user: User.third, blog: Blog.all)
+
+Have the first user create 3 posts for the blog with an id of 2. Remember that you shouldn't do
+Post.create(user: User.first, blog_id: 2) but more like Post.create(user: User.first, blog: Blog.find(2)).
+Again, you should never reference the foreign key in Rails.
+
+  Post.create(title:"This is a title", content:"this is the content", user: User.first, blog: Blog.find(2))
+  Post.create(title:"This is a title part 2", content:"this is the content, again", user: User.first, blog: Blog.find(2))
+  Post.create(title:"This is a title part 3", content:"this is the content again", user: User.first, blog: Blog.find(2))
+
+Have the second user create 5 posts for the last Blog.
+  Post.create(title:"This is a title 1", content:"this is the content 1", user: User.second, blog: Blog.last)
+  Post.create(title:"This is a title 2", content:"this is the content 2", user: User.second, blog: Blog.last)
+  Post.create(title:"This is a title 3", content:"this is the content 3", user: User.second, blog: Blog.last)
+  Post.create(title:"This is a title 4", content:"this is the content 4", user: User.second, blog: Blog.last)
+  Post.create(title:"This is a title 5", content:"this is the content 5", user: User.second, blog: Blog.last)
+
+Have the 3rd user create several posts for different blogs.
+  Post.create(title:"NBA", content:"This is the content of NBA", user: User.third, blog: Blog.third)
+  Post.create(title:"NFL", content:"This is the content of NFL", user: User.third, blog: Blog.first)
+
+Have the 3rd user create 2 messages for the first post created and 3 messages for the second post created
+  Message.create(author:"NBA", message:"This is the content of NBA", user: User.third, post: Post.first)
+  Message.create(author:"NFL", message:"This is the content of NFL", user: User.third, post: Post.first)
+  Message.create(author:"NBA", message:"This is the content of NBA", user: User.third, post: Post.second)
+  Message.create(author:"NBA", message:"This is the content of NBA", user: User.third, post: Post.second)
+  Message.create(author:"NBA", message:"This is the content of NBA", user: User.third, post: Post.second)
+
+Have the 4th user create 3 messages for the last post you created.
+  Message.create(author:"Ice Cream", message:"This is the message of Ice Cream", user: User.fourth, post: Post.last)
+  Message.create(author:"In N Out", message:"This is the message of In N Out", user: User.fourth, post: Post.last)
+  Message.create(author:"Fries", message:"This is the message of Fries", user: User.fourth, post: Post.last)
+
+Change the owner of the 2nd post to the last user.
+  Post.second.update(user: User.last)
+
+Change the 2nd post's content to be something else.
+  Post.second.update(content: "I'm changing the content, cool?")
+
+Retrieve all blogs owned by the 3rd user (make this work by simply doing: User.find(3).blogs).
+  User.third.blogs
+
+Retrieve all posts that were created by the 3rd user
+  User.third.posts
+
+Retrieve all messages left by the 3rd user
+  User.third.messages
+
+Retrieve all posts associated with the blog id 5 as well as who left these posts.
+  Post.joins(:user,:blog).where(Blog.id = 5).select("*")
+
+Retrieve all messages associated with the blog id 5 along with all the user information of those who left the messages
+  Message.joins(:user).where(post: Blog.find(5).posts).select("*")
+
+Grab all user information of those that own the first blog (make this work by allowing Blog.first.owners to work).
+  Blog.first.users
+
+Change it so that the first blog is no longer owned by the first user.
+  Owner.where("id = ? AND user_id = ?",1,1).update_all("user_id = 2")
