@@ -1,0 +1,8 @@
+rails g model User first_name:string last_name:string
+rails g model Friendship user_id:integer friend_id:integer
+
+
+User.create(first_name: "John", last_name: "Wall")
+User.create(first_name: "Deandre", last_name: "Jordan")
+User.create(first_name: "Kobe", last_name: "Bryant")
+User.create(first_name: "Michael", last_name: "Jordan")

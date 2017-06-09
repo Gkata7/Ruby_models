@@ -1,0 +1,15 @@
+CONTINUATION FROM BLOGS AND BLOGS 2
+
+Creating a polymorphic model
+  rails g model Comment content:text commentable:references{polymorphic}
+
+Add Comments
+  Comment.create(content: "This is a comment for the 4th user", commentable: User.fourth)
+  Comment.create(content: "This is a comment for the 3rd blog", commentable: Blog.third)
+  Comment.create(content: "This is a comment for the 1st message", commentable: Message.first)
+
+Update Comments
+  Comment.fourth.update(content: "Im updating the comment for this User")
+
+Delete Comments
+  Comment.first.destroy
