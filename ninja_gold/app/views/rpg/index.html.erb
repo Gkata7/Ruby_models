@@ -1,0 +1,55 @@
+<h1>
+  Your Gold: <input type="text"  value="<%= session[:value] %>">
+</h1>
+
+<div id="container">
+
+  <div class="box">
+    <h4>Farm</h4>
+    <p>(earns 10-20 golds)</p>
+    <form action="/farm" method="post">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+      <input type="submit" name="farm" value="Find Gold!">
+    </form>
+  </div>
+
+  <div class="box">
+    <h4>Cave</h4>
+    <p>(earns 5-10 golds)</p>
+    <form action="/cave" method="post">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+      <input type="submit" name="cave" value="Find Gold!">
+    </form>
+  </div>
+
+  <div class="box">
+    <h4>House</h4>
+    <p>(earns 2-5 golds)</p>
+    <form action="/house" method="post">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+      <input type="submit" name="house" value="Find Gold!">
+    </form>
+  </div>
+
+  <div class="box">
+    <h4>Casino</h4>
+    <p>(earns/takes 0-50 golds)</p>
+    <form action="/casino" method="post">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+      <input type="submit" name="casino" value="Find Gold!">
+    </form>
+  </div>
+
+  <div id= "comment">
+    <h3>Activities:</h3>
+    <% if session[:activites] %>
+    <%= session[:activites].each do |p| %>
+    <p><%= p %></p>
+    <% end %>
+    <% end %>
+    <form action="/reset" method="post">
+      <input name="authenticity_token" value="<%= form_authenticity_token %>" type="hidden">
+      <input type="submit" value="reset">
+    </form>
+  </div>
+</div>

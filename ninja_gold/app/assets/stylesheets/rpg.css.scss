@@ -1,0 +1,18 @@
+// Place all the styles related to the RPG controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.box{
+  display:inline-block;
+  vertical-align: top;
+  text-align: center;
+  margin-left: 100px;
+  border: 2px solid black;
+  width: 200px;
+}
+#comment{
+  border: 1px solid black;
+  height:300px;
+  margin-top: 50px;
+  overflow-y: auto;
+}
