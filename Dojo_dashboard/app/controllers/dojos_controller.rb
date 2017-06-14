@@ -16,14 +16,17 @@ class DojosController < ApplicationController
   end
 
   def edit
-    @dojo.find(params[:id]).update(branch: params[:branch], street: params[:street], city: params[:city], state: params[:state])
+    @dojo = Dojo.find(params[:id])
+  end
+
+  def update
+    @dojo = Dojo.find(params[:id]).update(branch: params[:branch], street: params[:street], city: params[:city], state: params[:state])
     puts @dojo
     redirect_to '/'
   end
 
   def destroy
-    dojo = Dojo.find(params[:id])
-    dojo.destroy
-    redirect_to '/dojos'
+    @dojo = Dojo.find(params[:id]).destroy
+    redirect_to '/'
   end
 end

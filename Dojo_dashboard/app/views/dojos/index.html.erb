@@ -15,9 +15,9 @@
         <th>State</th>
         <th>Actions</th>
       </thead>
-
-      <tbody>
+        <% if @dojos %>
         <% @dojos.each do |d| %>
+        <tbody>
         <tr>
           <td><%= d.branch %></td>
           <td><%= d.street %></td>
@@ -25,7 +25,9 @@
           <td><%= d.state %></td>
           <td><a href="/dojos/<%= d.id %>/show">Show</a></td>
           <td><a href="/dojos/<%= d.id %>/edit">Edit</a></td>
+          <td><a href="/dojos/<%= d.id %>"data-method='delete'>Delete</a></td>
         </tr>
+        <% end %>
         <% end %>
       <tbody>
     </table>
