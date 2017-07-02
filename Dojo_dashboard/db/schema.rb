@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170609233413) do
+ActiveRecord::Schema.define(version: 20170614063423) do
 
   create_table "dojos", force: true do |t|
     t.string   "branch"
@@ -21,5 +21,16 @@ ActiveRecord::Schema.define(version: 20170609233413) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "students", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.integer  "dojo_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "students", ["dojo_id"], name: "index_students_on_dojo_id"
 
 end
